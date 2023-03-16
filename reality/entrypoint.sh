@@ -39,7 +39,7 @@ SERVERNAMES_JSON_ARRAY="$(echo "[$(echo $SERVERNAMES | awk '{for(i=1;i<=NF;i++) 
 jq --argjson serverNames "$SERVERNAMES_JSON_ARRAY" '.inbounds[0].streamSettings.realitySettings.serverNames = $serverNames' /config.json > /config.json_tmp && mv /config.json_tmp /config.json
 
 jq ".inbounds[0].streamSettings.realitySettings.privateKey=\"$PRIVATEKEY\"" /config.json > /config.json_tmp && mv /config.json_tmp /config.json
-jq ".inbounds[0].streamSettings.realitySettings.network=\"$NETWORK\"" /config.json > /config.json_tmp && mv /config.json_tmp /config.json
+jq ".inbounds[0].streamSettings.network=\"$NETWORK\"" /config.json > /config.json_tmp && mv /config.json_tmp /config.json
 
 # config info with green color
 echo -e "\033[32m"
