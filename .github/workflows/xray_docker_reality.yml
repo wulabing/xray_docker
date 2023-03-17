@@ -1,6 +1,7 @@
 name: xray_docker_reality_docker_image_build
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'reality/Dockerfile'
