@@ -39,10 +39,10 @@ jobs:
         echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
     
     - name: Build the Docker image latest
-      run: docker build --file Dockerfile --tag wulabing/xray_docker_reality:latest ./xray_docker/reality
+      run: docker build --file Dockerfile --tag wulabing/xray_docker_reality:latest ./reality
 
     - name: Build the Docker image
-      run: docker build --file Dockerfile --tag wulabing/xray_docker_reality:${{env.TAG_NAME}} ./xray_docker/reality
+      run: docker build --file Dockerfile --tag wulabing/xray_docker_reality:${{env.TAG_NAME}} ./reality
 
     - name: Push the Docker image latest
       run: docker push wulabing/xray_docker_reality:latest
