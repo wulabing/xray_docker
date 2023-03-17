@@ -11,7 +11,7 @@ RUN apk add --no-cache git && git clone https://github.com/XTLS/Xray-core.git . 
     go build -o xray /app/main/
 
 # runner
-FROM alpine:3.17 as runner
+FROM alpine:latest as runner
 
 
 ENV UUID=""
