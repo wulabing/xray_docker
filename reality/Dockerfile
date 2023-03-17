@@ -24,7 +24,9 @@ ENV TZ=Asia/Shanghai
 
 WORKDIR /
 
-COPY . /
+COPY ./entrypoint.sh /
+COPY ./config.json /
+
 COPY --from=builder /app/xray /
 
 RUN apk add --no-cache tzdata ca-certificates util-linux jq && \

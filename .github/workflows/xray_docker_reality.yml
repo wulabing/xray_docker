@@ -17,33 +17,34 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3.4.0
+      - name: Checkout
+        uses: actions/checkout@v3.4.0
 
-    - name: Docker Setup Buildx
-      uses: docker/setup-buildx-action@v2.5.0
+      - name: Docker Setup Buildx
+        uses: docker/setup-buildx-action@v2.5.0
 
-    - name: Docker Login
-      uses: docker/login-action@v2.1.0
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Docker Login
+        uses: docker/login-action@v2.1.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Extract first line of commit message
-      shell: bash
-      run: |
-        COMMIT_MESSAGE=$(git log --format=%B -n 1 ${{ github.sha }})
-        FIRST_LINE=$(echo "$COMMIT_MESSAGE" | head -n1)
-        TAG_NAME=$(echo "$FIRST_LINE" | tr -d '[:space:]') # Remove spaces if needed
-        echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
-    
-    - name: Build the Docker image latest
-      run: docker build --file ./reality/Dockerfile --tag wulabing/xray_docker_reality:latest ./reality
+      - name: Extract first line of commit message
+        shell: bash
+        run: |
+          COMMIT_MESSAGE=$(git log --format=%B -n 1 ${{ github.sha }})
+          FIRST_LINE=$(echo "$COMMIT_MESSAGE" | head -n1)
+          TAG_NAME=$(echo "$FIRST_LINE" | tr -d '[:space:]') # Remove spaces if needed
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
-    - name: Build the Docker image
-      run: docker build --file ./reality/Dockerfile --tag wulabing/xray_docker_reality:${{env.TAG_NAME}} ./reality
+      - name: Build the Docker image
+        run: docker build --file ./reality/Dockerfile --tag wulabing/xray_docker_reality:${{env.TAG_NAME}} ./reality
 
-    - name: Push the Docker image latest
-      run: docker push wulabing/xray_docker_reality:latest
-    - name: Push the Docker image
-      run: docker push wulabing/xray_docker_reality:${{env.TAG_NAME}}
+      - name: Build the Docker image latest
+        run: docker build --file ./reality/Dockerfile --tag wulabing/xray_docker_reality:latest ./reality
+
+      - name: Push the Docker image
+        run: docker push wulabing/xray_docker_reality:${{env.TAG_NAME}}
+
+      - name: Push the Docker image latest
+        run: docker push wulabing/xray_docker_reality:latest

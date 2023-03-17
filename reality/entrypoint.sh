@@ -1,7 +1,6 @@
 #!/bin/sh
 if [ -f /config_info.txt ]; then
   echo "config.json exist"
-  cat /config_info.txt
 else
   if [ -z "$UUID" ]; then
     echo "UUID is not set, generate random UUID "
@@ -42,17 +41,20 @@ else
 
   jq ".inbounds[0].streamSettings.realitySettings.privateKey=\"$PRIVATEKEY\"" /config.json >/config.json_tmp && mv /config.json_tmp /config.json
   jq ".inbounds[0].streamSettings.network=\"$NETWORK\"" /config.json >/config.json_tmp && mv /config.json_tmp /config.json
+
+  # config info with green color
+  echo -e "\033[32m" >/config_info.txt
+  echo "UUID: $UUID" >>/config_info.txt
+  echo "DEST: $DEST" >>/config_info.txt
+  echo "SERVERNAMES: $SERVERNAMES (任选其一)" >>/config_info.txt
+  echo "PRIVATEKEY: $PRIVATEKEY" >>/config_info.txt
+  echo "PUBLICKEY: $PUBLICKEY" >>/config_info.txt
+  echo "NETWORK: $NETWORK" >>/config_info.txt
+  echo -e "\033[0m" >>/config_info.txt
 fi
 
-# config info with green color
-echo -e "\033[32m" >/config_info.txt
-echo "UUID: $UUID" >>/config_info.txt
-echo "DEST: $DEST" >>/config_info.txt
-echo "SERVERNAMES: $SERVERNAMES (任选其一)" >>/config_info.txt
-echo "PRIVATEKEY: $PRIVATEKEY" >>/config_info.txt
-echo "PUBLICKEY: $PUBLICKEY" >>/config_info.txt
-echo "NETWORK: $NETWORK" >>/config_info.txt
-echo -e "\033[0m" >>/config_info.txt
+# show config info
+cat /config_info.txt
 
 # run xray
 exec /xray -config /config.json

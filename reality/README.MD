@@ -12,7 +12,7 @@ curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
 
 
 ```
-docker run -d --name xray_reality --restart=always -p 443:443 wulabing/xray_docker_reality:0.0.1
+docker run -d --name xray_reality --restart=always -p 443:443 wulabing/xray_docker_reality:latest
 ```
 
 查看日志获取配置信息
