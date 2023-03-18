@@ -29,7 +29,7 @@ COPY ./config.json /
 
 COPY --from=builder /app/xray /
 
-RUN apk add --no-cache tzdata ca-certificates util-linux jq && \
+RUN apk add --no-cache tzdata ca-certificates jq && \
     mkdir -p /var/log/xray &&\
     wget -O /geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat && \
     wget -O /geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat && \

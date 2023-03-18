@@ -4,7 +4,7 @@ if [ -f /config_info.txt ]; then
 else
   if [ -z "$UUID" ]; then
     echo "UUID is not set, generate random UUID "
-    UUID="$(uuidgen)"
+    UUID="$(/xray uuid)"
     echo "UUID: $UUID"
 
   fi
