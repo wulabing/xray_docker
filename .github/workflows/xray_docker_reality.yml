@@ -37,14 +37,13 @@ jobs:
           TAG_NAME=$(echo "$FIRST_LINE" | tr -d '[:space:]') # Remove spaces if needed
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
-      - name: Build the Docker image
-        run: docker build --file ./reality/Dockerfile --tag wulabing/xray_docker_reality:${{env.TAG_NAME}} ./reality
-
-      - name: Build the Docker image latest
-        run: docker build --file ./reality/Dockerfile --tag wulabing/xray_docker_reality:latest ./reality
-
-      - name: Push the Docker image
-        run: docker push wulabing/xray_docker_reality:${{env.TAG_NAME}}
-
-      - name: Push the Docker image latest
-        run: docker push wulabing/xray_docker_reality:latest
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: ./reality
+          file: ./reality/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            wulabing/xray_docker_reality:${{env.TAG_NAME}}
+            wulabing/xray_docker_reality:latest
+          push: true
