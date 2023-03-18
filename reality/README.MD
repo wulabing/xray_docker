@@ -1,6 +1,8 @@
 ## xray_docker_reality
 xray reality  docker 镜像
 
+[![xray_docker_reality_docker_image_build](https://github.com/wulabing/xray_docker/actions/workflows/xray_docker_reality.yml/badge.svg)](https://github.com/wulabing/xray_docker/actions/workflows/xray_docker_reality.yml)
+
 ## 使用方法
 如果你没有安装 docker 请先安装docker
 
