@@ -2,11 +2,12 @@
 if [ -f /config_info.txt ]; then
   echo "config.json exist"
 else
+  IPV6=$(curl -6 ip.sb || echo "null")
+  IPV4=$(curl -4 ip.sb || echo "null")
   if [ -z "$UUID" ]; then
     echo "UUID is not set, generate random UUID "
     UUID="$(/xray uuid)"
     echo "UUID: $UUID"
-
   fi
 
   if [ -z "$DEST" ]; then
@@ -44,6 +45,8 @@ else
 
   # config info with green color
   echo -e "\033[32m" >/config_info.txt
+  echo "IPV6: $IPV6" >>/config_info.txt
+  echo "IPV4: $IPV4" >>/config_info.txt
   echo "UUID: $UUID" >>/config_info.txt
   echo "DEST: $DEST" >>/config_info.txt
   echo "SERVERNAMES: $SERVERNAMES (任选其一)" >>/config_info.txt
