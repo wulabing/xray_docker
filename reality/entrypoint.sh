@@ -2,8 +2,8 @@
 if [ -f /config_info.txt ]; then
   echo "config.json exist"
 else
-  IPV6=$(curl -6 ip.sb || echo "null")
-  IPV4=$(curl -4 ip.sb || echo "null")
+  IPV6=$(curl -6 -sSL --connect-timeout 3 --retry 2  ip.sb || echo "null")
+  IPV4=$(curl -4 -sSL --connect-timeout 3 --retry 2  ip.sb || echo "null")
   if [ -z "$UUID" ]; then
     echo "UUID is not set, generate random UUID "
     UUID="$(/xray uuid)"
