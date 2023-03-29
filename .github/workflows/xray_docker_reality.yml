@@ -6,12 +6,12 @@ on:
     paths:
       - 'reality/Dockerfile'
       - '.github/workflows/xray_docker_reality.yml'
-      - 'reality/entrypoin.sh'
+      - 'reality/entrypoint.sh'
   pull_request:
     paths:
       - 'reality/Dockerfile'
       - '.github/workflows/xray_docker_reality.yml'
-      - 'reality/entrypoin.sh'
+      - 'reality/entrypoint.sh'
 
 jobs:
   build:
