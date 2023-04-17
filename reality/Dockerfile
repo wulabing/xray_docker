@@ -6,7 +6,7 @@ LABEL maintainer="wulabing <wulabing@gmail.com>"
 #ENV GOPROXY=https://goproxy.cn,direct
 WORKDIR /app
 
-RUN apk add --no-cache git && git clone https://github.com/XTLS/Xray-core.git . && \
+RUN apk add --no-cache git libqrencode && git clone https://github.com/XTLS/Xray-core.git . && \
     go mod download && \
     go build -o xray /app/main/
 
