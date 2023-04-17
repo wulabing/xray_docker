@@ -14,6 +14,7 @@ curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
 EXTERNAL_PORT 为你想要使用的端口，如下所示，你将使用443端口
 
 ```
+docker pull wulabing/xray_docker_reality:latest
 EXTERNAL_PORT=443
 docker run -d --name xray_reality --restart=always -p $EXTERNAL_PORT:443 -e EXTERNAL_PORT=$EXTERNAL_PORT wulabing/xray_docker_reality:latest
 ```
