@@ -15,6 +15,11 @@ else
     EXTERNAL_PORT=443
   fi
 
+  if [ -n "$HOSTMODE_PORT" ];then
+    EXTERNAL_PORT=$HOSTMODE_PORT
+    jq ".inbounds[0].port=$HOSTMODE_PORT" /config.json >/config.json_tmp && mv /config.json_tmp /config.json
+  fi
+
   if [ -z "$DEST" ]; then
     echo "DEST is not set. default value www.apple.com:443"
     DEST="www.apple.com:443"
@@ -38,6 +43,7 @@ else
     echo "NETWORK is not set,set default value tcp"
     NETWORK="tcp"
   fi
+
   # change config
   jq ".inbounds[0].settings.clients[0].id=\"$UUID\"" /config.json >/config.json_tmp && mv /config.json_tmp /config.json
   jq ".inbounds[0].streamSettings.realitySettings.dest=\"$DEST\"" /config.json >/config.json_tmp && mv /config.json_tmp /config.json
@@ -47,6 +53,9 @@ else
 
   jq ".inbounds[0].streamSettings.realitySettings.privateKey=\"$PRIVATEKEY\"" /config.json >/config.json_tmp && mv /config.json_tmp /config.json
   jq ".inbounds[0].streamSettings.network=\"$NETWORK\"" /config.json >/config.json_tmp && mv /config.json_tmp /config.json
+
+
+
 
   FIRST_SERVERNAME=$(echo $SERVERNAMES | awk '{print $1}')
   # config info with green color
