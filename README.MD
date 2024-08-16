@@ -5,7 +5,7 @@ xray reality docker 镜像
 
 ## 懒人一键安装（docker已经准备好）
 ```
-EXTERNAL_PORT=2333 && docker run -d --name xray_reality --restart=always -p $EXTERNAL_PORT:443 -e EXTERNAL_PORT=$EXTERNAL_PORT wulabing/xray_docker_reality:latest && docker exec -it xray_reality cat /config_info.txt
+EXTERNAL_PORT=2333 && docker run -d --name xray_reality --restart=always -p $EXTERNAL_PORT:443 -e EXTERNAL_PORT=$EXTERNAL_PORT wulabing/xray_docker_reality:latest && sleep 3 && docker exec -it xray_reality cat /config_info.txt
 ```
 
 ## 基础使用方法
