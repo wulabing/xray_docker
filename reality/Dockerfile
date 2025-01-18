@@ -1,5 +1,5 @@
 # builder
-FROM golang:alpine as builder
+FROM golang:alpine AS builder
 LABEL maintainer="wulabing <wulabing@gmail.com>"
 LABEL version="0.0.24"
 
@@ -12,7 +12,7 @@ RUN apk add --no-cache git  && git clone https://github.com/XTLS/Xray-core.git .
     go build -o xray /app/main/
 
 # runner
-FROM alpine:latest as runner
+FROM alpine:latest AS runner
 
 
 ENV UUID=""
