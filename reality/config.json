@@ -100,6 +100,13 @@
       },
       {
         "domain": [
+          "domain:byr.pt"
+        ],
+        "type": "field",
+        "outboundTag": "direct"
+      },
+      {
+        "domain": [
           "domain:iqiyi.com",
           "domain:video.qq.com",
           "domain:youku.com"
