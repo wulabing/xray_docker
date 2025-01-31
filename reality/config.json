@@ -39,8 +39,23 @@
   },
   "inbounds": [
     {
-      "listen": "0.0.0.0",
+      "tag": "dokodemo-in",
       "port": 443,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "127.0.0.1",
+        "port": 65432,
+        "network": "tcp"
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["tls"],
+        "routeOnly": true
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 65432,
       "protocol": "vless",
       "settings": {
         "clients": [
@@ -91,6 +106,15 @@
   "routing": {
     "domainStrategy": "IPIfNonMatch",
     "rules": [
+      {
+        "inboundTag": ["dokodemo-in"],
+        "domain": ["xx"],
+        "outboundTag": "direct"
+      },
+      {
+        "inboundTag": ["dokodemo-in"],
+        "outboundTag": "blocked"
+      },
       {
         "inboundTag": [
           "api"
