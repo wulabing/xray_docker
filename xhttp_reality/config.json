@@ -1,0 +1,183 @@
+{
+    "log": {
+      "dnsLog": false,
+      "access": "/var/log/xray/access.log",
+      "error": "/var/log/xray/error.log",
+      "loglevel": "error",
+      "maskAddress": ""
+    },
+    "routing": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "inboundTag": [
+            "api"
+          ],
+          "outboundTag": "api",
+          "type": "field"
+        },
+        {
+          "domain": [
+            "domain:byr.pt"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "domain": [
+            "domain:iqiyi.com",
+            "domain:video.qq.com",
+            "domain:youku.com"
+          ],
+          "type": "field",
+          "outboundTag": "blocked"
+        },
+        {
+          "type": "field",
+          "ip": [
+            "geoip:cn",
+            
+            "geoip:private"
+          ],
+          "outboundTag": "blocked"
+        },
+        {
+          "protocol": [
+            "bittorrent"
+          ],
+          "type": "field",
+          "outboundTag": "blocked"
+        }
+      ]
+    },
+    "dns": {
+      "servers": [
+        "https+local://cloudflare-dns.com/dns-query",
+        "1.1.1.1",
+        "1.0.0.1",
+        "8.8.8.8",
+        "8.8.4.4",
+        "localhost"
+      ]
+    },
+    "inbounds": [
+      {
+        "listen": "127.0.0.1",
+        "port": 65432,
+        "protocol": "dokodemo-door",
+        "settings": {
+          "address": "127.0.0.1"
+        },
+        "streamSettings": null,
+        "tag": "api",
+        "sniffing": null,
+        "allocate": null
+      },
+      {
+        "listen": "0.0.0.0",
+        "port": 443,
+        "protocol": "vless",
+        "settings": {
+          "clients": [
+            {
+              "flow": "",
+              "id": "xx"
+            }
+          ],
+          "decryption": "none",
+          "fallbacks": []
+        },
+        "streamSettings": {
+          "network": "xhttp",
+          "realitySettings": {
+            "dest": "xx",
+            "maxClient": "",
+            "maxTimediff": 0,
+            "minClient": "",
+            "privateKey": "xx",
+            "serverNames": [
+              "xx"
+            ],
+            "shortIds": [
+              ""
+            ],
+            "show": false,
+            "xver": 0
+          },
+          "security": "reality",
+          "xhttpSettings": {
+            "headers": {},
+            "host": "",
+            "mode": "auto",
+            "noSSEHeader": false,
+            "path": "xx",
+            "scMaxBufferedPosts": 30,
+            "scMaxEachPostBytes": "1000000",
+            "scStreamUpServerSecs": "20-80",
+            "xPaddingBytes": "100-1000"
+          }
+        },
+        "tag": "inbound-xx",
+        "sniffing": {
+          "enabled": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic",
+            "fakedns"
+          ],
+          "metadataOnly": false,
+          "routeOnly": false
+        },
+        "allocate": {
+          "strategy": "always",
+          "refresh": 5,
+          "concurrency": 3
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "AsIs",
+          "redirect": "",
+          "noises": []
+        }
+      },
+      {
+        "tag": "blocked",
+        "protocol": "blackhole",
+        "settings": {}
+      }
+    ],
+    "transport": null,
+    "policy": {
+      "levels": {
+        "0": {
+          "statsUserDownlink": true,
+          "statsUserUplink": true
+        }
+      },
+      "system": {
+        "statsInboundDownlink": true,
+        "statsInboundUplink": true,
+        "statsOutboundDownlink": false,
+        "statsOutboundUplink": false
+      }
+    },
+    "api": {
+      "tag": "api",
+      "services": [
+        "HandlerService",
+        "LoggerService",
+        "StatsService"
+      ]
+    },
+    "stats": {},
+    "reverse": null,
+    "fakedns": null,
+    "observatory": null,
+    "burstObservatory": null
+  }

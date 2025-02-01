@@ -17,13 +17,13 @@ RUN apk add --no-cache git curl jq && \
 # runner
 FROM alpine:latest AS runner
 
-
 ENV UUID=""
 ENV DEST=""
 ENV SERVERNAMES=""
 ENV PRIVATEKEY=""
 ENV SHORTIDS=""
 ENV NETWORK=""
+ENV XHTTP_PATH=""
 ENV INTERNAL_PORT=""
 ENV HOSTMODE_PORT=""
 ENV TZ=Asia/Shanghai

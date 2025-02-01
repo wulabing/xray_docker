@@ -5,6 +5,10 @@ xray reality docker 镜像
 
 > 新的命令中添加了日志大小的限制，可以调整 max-size=100m 的数量来调整日志的最大大小，需要限制日志大小的用户请重新创建容器
 
+> 变更了镜像tag，不影响已经使用的用户
+
+> 仓库会每两天在 UTC+8 04:00 自动构建镜像
+
 ## 懒人一键安装（docker已经准备好）
 ```
 EXTERNAL_PORT=2333 && docker run -d --name xray_reality --restart=always --log-opt max-size=100m --log-opt max-file=3 -p $EXTERNAL_PORT:443 -e EXTERNAL_PORT=$EXTERNAL_PORT wulabing/xray_docker_reality:latest && sleep 3 && docker exec -it xray_reality cat /config_info.txt
