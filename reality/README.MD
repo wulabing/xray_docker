@@ -7,7 +7,7 @@ xray reality docker 镜像
 
 > 变更了镜像tag，不影响已经使用的用户
 
-> 仓库会每两天在 UTC+8 04:00 自动构建镜像
+> 本 xray_docker_reality 仓库会每两天在 UTC+8 04:00 自动构建镜像
 
 ## 懒人一键安装（docker已经准备好）
 ```

@@ -1,4 +1,4 @@
-name: xray_docker_reality_docker_image_build
+name: xray_docker_reality
 
 on:
   workflow_dispatch:
