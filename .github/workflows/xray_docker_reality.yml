@@ -9,11 +9,15 @@ on:
       - 'reality/Dockerfile'
       - '.github/workflows/xray_docker_reality.yml'
       - 'reality/entrypoint.sh'
+      - 'reality/config.json'
+      - 'reality/VERSION'
   pull_request:
     paths:
       - 'reality/Dockerfile'
       - '.github/workflows/xray_docker_reality.yml'
       - 'reality/entrypoint.sh'
+      - 'reality/config.json'
+      - 'reality/VERSION'
 
 jobs:
   build:
@@ -37,10 +41,8 @@ jobs:
       - name: Extract first line of commit message
         shell: bash
         run: |
-          COMMIT_MESSAGE=$(git log --format=%B -n 1 ${{ github.sha }})
-          FIRST_LINE=$(echo "$COMMIT_MESSAGE" | head -n1)
-          TAG_NAME=$(echo "$FIRST_LINE" | tr -d '[:space:]') # Remove spaces if needed
-          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          VERSION=$(cat reality/VERSION)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Get latest Xray-core version (including pre-release)
         run: |
@@ -54,6 +56,6 @@ jobs:
           file: ./reality/Dockerfile
           platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
           tags: |
-            wulabing/xray_docker_reality:${{env.TAG_NAME}}-ubuntu-22.04-xray-${{env.XRAY_VERSION}}
+            wulabing/xray_docker_reality:${{env.VERSION}}-ubuntu-22.04-xray-${{env.XRAY_VERSION}}
             wulabing/xray_docker_reality:latest
           push: true
