@@ -15,7 +15,7 @@ EXTERNAL_PORT=23333 && docker run -d --name xray_xhttp_reality --restart=always 
 如果你没有安装 docker 请先安装 docker
 
 ```
-curl -fsSL get.docker.com -o get-docker.sh && sh 
+curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
 ```
 
 ## 端口映射模式
