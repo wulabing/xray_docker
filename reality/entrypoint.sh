@@ -34,7 +34,7 @@ else
     echo "PRIVATEKEY is not set. generate new key"
     /xray x25519 >/key
     PRIVATEKEY=$(cat /key | grep "Private" | awk -F ': ' '{print $2}')
-    PUBLICKEY=$(cat /key | grep "Public" | awk -F ': ' '{print $2}')
+    PUBLICKEY=$(cat /key | grep "Password" | awk -F ': ' '{print $2}')
     echo "Private key: $PRIVATEKEY"
     echo "Public key: $PUBLICKEY"
   fi
@@ -67,7 +67,7 @@ else
   echo "PORT: $EXTERNAL_PORT" >>/config_info.txt
   echo "SERVERNAMES: $SERVERNAMES (任选其一)" >>/config_info.txt
   echo "PRIVATEKEY: $PRIVATEKEY" >>/config_info.txt
-  echo "PUBLICKEY: $PUBLICKEY" >>/config_info.txt
+  echo "PUBLICKEY/PASSWORD: $PUBLICKEY" >>/config_info.txt
   echo "NETWORK: $NETWORK" >>/config_info.txt
   if [ "$IPV4" != "null" ]; then
     SUB_IPV4="vless://$UUID@$IPV4:$EXTERNAL_PORT?encryption=none&security=reality&type=$NETWORK&sni=$FIRST_SERVERNAME&fp=chrome&pbk=$PUBLICKEY&flow=xtls-rprx-vision#${IPV4}-wulabing_docker_vless_reality_vision"

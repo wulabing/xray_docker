@@ -41,7 +41,7 @@ else
     echo "PRIVATEKEY is not set. generate new key"
     /xray x25519 >/key
     PRIVATEKEY=$(cat /key | grep "Private" | awk -F ': ' '{print $2}')
-    PUBLICKEY=$(cat /key | grep "Public" | awk -F ': ' '{print $2}')
+    PUBLICKEY=$(cat /key | grep "Password" | awk -F ': ' '{print $2}')
     echo "Private key: $PRIVATEKEY"
     echo "Public key: $PUBLICKEY"
   fi
@@ -75,7 +75,7 @@ else
   echo "PORT: $EXTERNAL_PORT" >>/config_info.txt
   echo "SERVERNAMES: $SERVERNAMES (任选其一)" >>/config_info.txt
   echo "PRIVATEKEY: $PRIVATEKEY" >>/config_info.txt
-  echo "PUBLICKEY: $PUBLICKEY" >>/config_info.txt
+  echo "PUBLICKEY/PASSWORD: $PUBLICKEY" >>/config_info.txt
   echo "NETWORK: $NETWORK" >>/config_info.txt
   echo "XHTTP_PATH: $XHTTP_PATH" >>/config_info.txt
 
