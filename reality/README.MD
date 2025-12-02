@@ -22,6 +22,7 @@ EXTERNAL_PORT=2333 && docker run -d --name xray_reality --restart=always --log-o
 curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
 ```
 
+### docker-compose.yml文件：
 ```
 version: '3.8'
 
@@ -39,6 +40,7 @@ services:
       - SERVERNAMES=www.apple.com images.apple.com
       - ENABLE_RATE_LIMIT=true
     restart: unless-stopped
+    network_mode: bridge
 ```
 
 ### 端口映射模式
