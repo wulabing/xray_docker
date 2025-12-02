@@ -126,7 +126,7 @@ docker rm -f xray_reality
     "bytesPerSec": 20480         // 持续限速：20 KB/s
   }
 }
-```：网络类型。默认值为 tcp。
+```
 
 ## 常量
 * flow：xtls-rprx-vision
