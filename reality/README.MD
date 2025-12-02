@@ -21,6 +21,26 @@ EXTERNAL_PORT=2333 && docker run -d --name xray_reality --restart=always --log-o
 ```
 curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
 ```
+
+```
+version: '3.8'
+
+services:
+  xray-reality:
+    image: xray-reality:latest
+    container_name: xray-reality
+    ports:
+      - "443:443"
+    volumes:
+      - ./xray-app:/app
+    environment:
+      - UUID=your-uuid-here
+      - DEST=www.apple.com:443
+      - SERVERNAMES=www.apple.com images.apple.com
+      - ENABLE_RATE_LIMIT=true
+    restart: unless-stopped
+```
+
 ### 端口映射模式
 如果你已经安装 docker，可以直接使用下面的命令，运行后会自动下载镜像并启动容器，
 EXTERNAL_PORT 为你想要使用的端口，如下所示，你将使用443端口
@@ -91,6 +111,22 @@ docker rm -f xray_reality
 * SERVERNAMES：服务器名称列表。默认值为 www.apple.com images.apple.com。
 * PRIVATEKEY：私钥。若未设置，脚本将自动生成一个新的私钥和对应的公钥。
 * NETWORK：网络类型。默认值为 tcp。
+* `ENABLE_RATE_LIMIT=true` 时，系统会自动应用以下限速配置：
+
+```json
+{
+  "limitFallbackUpload": {
+    "afterBytes": 4194304,       // 前 4MB 不限速
+    "burstBytesPerSec": 94208,   // 最大突发：92 KB/s
+    "bytesPerSec": 20480         // 持续限速：20 KB/s
+  },
+  "limitFallbackDownload": {
+    "afterBytes": 4194304,       // 前 4MB 不限速
+    "burstBytesPerSec": 94208,   // 最大突发：92 KB/s
+    "bytesPerSec": 20480         // 持续限速：20 KB/s
+  }
+}
+```：网络类型。默认值为 tcp。
 
 ## 常量
 * flow：xtls-rprx-vision
