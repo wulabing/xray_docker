@@ -56,6 +56,6 @@ jobs:
           file: ./reality/Dockerfile
           platforms: linux/amd64
           tags: |
-            kwxos/xray_docker_reality:${{env.VERSION}}-ubuntu-22.04-xray-${{env.XRAY_VERSION}}
-            kwxos/xray_docker_reality:latest
+            wulabing/xray_docker_reality:${{env.VERSION}}-ubuntu-22.04-xray-${{env.XRAY_VERSION}}
+            wulabing/xray_docker_reality:latest
           push: true
