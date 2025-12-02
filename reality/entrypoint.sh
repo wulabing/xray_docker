@@ -66,16 +66,16 @@ else
   jq ".inbounds[1].streamSettings.realitySettings.privateKey=\"$PRIVATEKEY\"" /app/config.json >/app/config.json_tmp && mv /app/config.json_tmp /app/config.json
   jq ".inbounds[1].streamSettings.network=\"$NETWORK\"" /app/config.json >/app/config.json_tmp && mv /app/config.json_tmp /app/config.json
 
-  # 添加限速配置
+  # 添加防盗流量限速配置
   if [ "$ENABLE_RATE_LIMIT" = "true" ]; then
-    echo "Enabling rate limit configuration"
-    jq '.policy.levels."0".limitFallbackUpload = {
+    echo "Enabling rate limit configuration for reality fallback"
+    jq '.inbounds[1].streamSettings.realitySettings.limitFallbackUpload = {
       "afterBytes": 4194304,
       "burstBytesPerSec": 94208,
       "bytesPerSec": 20480
     }' /app/config.json >/app/config.json_tmp && mv /app/config.json_tmp /app/config.json
     
-    jq '.policy.levels."0".limitFallbackDownload = {
+    jq '.inbounds[1].streamSettings.realitySettings.limitFallbackDownload = {
       "afterBytes": 4194304,
       "burstBytesPerSec": 94208,
       "bytesPerSec": 20480
