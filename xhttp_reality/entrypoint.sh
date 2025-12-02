@@ -1,5 +1,8 @@
 #!/bin/sh
-if [ -f /config_info.txt ]; then
+# 创建 app 目录用于持久化
+mkdir -p /app
+
+if [ -f /app/config_info.txt ]; then
   echo "config.json exist"
 else
   IPV6=$(curl -6 -sSL --connect-timeout 3 --retry 2  ip.sb || echo "null")
@@ -51,52 +54,77 @@ else
     NETWORK="xhttp"
   fi
 
+  if [ -z "$ENABLE_RATE_LIMIT" ]; then
+    echo "ENABLE_RATE_LIMIT is not set, default value false"
+    ENABLE_RATE_LIMIT="false"
+  fi
+
+  # 复制配置文件到 app 目录
+  cp /config.json /app/config.json
+
   # change config
-  jq ".inbounds[1].settings.clients[0].id=\"$UUID\"" /config.json >/config.json_tmp && mv /config.json_tmp /config.json
-  jq ".inbounds[1].streamSettings.realitySettings.dest=\"$DEST\"" /config.json >/config.json_tmp && mv /config.json_tmp /config.json
-  jq ".inbounds[1].streamSettings.xhttpSettings.path=\"$XHTTP_PATH\"" /config.json >/config.json_tmp && mv /config.json_tmp /config.json
+  jq ".inbounds[1].settings.clients[0].id=\"$UUID\"" /app/config.json >/app/config.json_tmp && mv /app/config.json_tmp /app/config.json
+  jq ".inbounds[1].streamSettings.realitySettings.dest=\"$DEST\"" /app/config.json >/app/config.json_tmp && mv /app/config.json_tmp /app/config.json
+  jq ".inbounds[1].streamSettings.xhttpSettings.path=\"$XHTTP_PATH\"" /app/config.json >/app/config.json_tmp && mv /app/config.json_tmp /app/config.json
 
   SERVERNAMES_JSON_ARRAY="$(echo "[$(echo $SERVERNAMES | awk '{for(i=1;i<=NF;i++) printf "\"%s\",", $i}' | sed 's/,$//')]")"
-  jq --argjson serverNames "$SERVERNAMES_JSON_ARRAY" '.inbounds[1].streamSettings.realitySettings.serverNames = $serverNames' /config.json >/config.json_tmp && mv /config.json_tmp /config.json
-  # jq --argjson serverNames "$SERVERNAMES_JSON_ARRAY" '.routing.rules[0].domain = $serverNames' /config.json >/config.json_tmp && mv /config.json_tmp /config.json
+  jq --argjson serverNames "$SERVERNAMES_JSON_ARRAY" '.inbounds[1].streamSettings.realitySettings.serverNames = $serverNames' /app/config.json >/app/config.json_tmp && mv /app/config.json_tmp /app/config.json
+  # jq --argjson serverNames "$SERVERNAMES_JSON_ARRAY" '.routing.rules[0].domain = $serverNames' /app/config.json >/app/config.json_tmp && mv /app/config.json_tmp /app/config.json
 
-  jq ".inbounds[1].streamSettings.realitySettings.privateKey=\"$PRIVATEKEY\"" /config.json >/config.json_tmp && mv /config.json_tmp /config.json
-  jq ".inbounds[1].streamSettings.network=\"$NETWORK\"" /config.json >/config.json_tmp && mv /config.json_tmp /config.json
+  jq ".inbounds[1].streamSettings.realitySettings.privateKey=\"$PRIVATEKEY\"" /app/config.json >/app/config.json_tmp && mv /app/config.json_tmp /app/config.json
+  jq ".inbounds[1].streamSettings.network=\"$NETWORK\"" /app/config.json >/app/config.json_tmp && mv /app/config.json_tmp /app/config.json
+
+  # 添加限速配置
+  if [ "$ENABLE_RATE_LIMIT" = "true" ]; then
+    echo "Enabling rate limit configuration"
+    jq '.policy.levels."0".limitFallbackUpload = {
+      "afterBytes": 4194304,
+      "burstBytesPerSec": 94208,
+      "bytesPerSec": 20480
+    }' /app/config.json >/app/config.json_tmp && mv /app/config.json_tmp /app/config.json
+    
+    jq '.policy.levels."0".limitFallbackDownload = {
+      "afterBytes": 4194304,
+      "burstBytesPerSec": 94208,
+      "bytesPerSec": 20480
+    }' /app/config.json >/app/config.json_tmp && mv /app/config.json_tmp /app/config.json
+  fi
 
 
 
   FIRST_SERVERNAME=$(echo $SERVERNAMES | awk '{print $1}')
   # config info with green color
-  echo -e "\033[32m" >/config_info.txt
-  echo "IPV6: $IPV6" >>/config_info.txt
-  echo "IPV4: $IPV4" >>/config_info.txt
-  echo "UUID: $UUID" >>/config_info.txt
-  echo "DEST: $DEST" >>/config_info.txt
-  echo "PORT: $EXTERNAL_PORT" >>/config_info.txt
-  echo "SERVERNAMES: $SERVERNAMES (任选其一)" >>/config_info.txt
-  echo "PRIVATEKEY: $PRIVATEKEY" >>/config_info.txt
-  echo "PUBLICKEY/PASSWORD: $PUBLICKEY" >>/config_info.txt
-  echo "NETWORK: $NETWORK" >>/config_info.txt
-  echo "XHTTP_PATH: $XHTTP_PATH" >>/config_info.txt
+  echo -e "\033[32m" >/app/config_info.txt
+  echo "IPV6: $IPV6" >>/app/config_info.txt
+  echo "IPV4: $IPV4" >>/app/config_info.txt
+  echo "UUID: $UUID" >>/app/config_info.txt
+  echo "DEST: $DEST" >>/app/config_info.txt
+  echo "PORT: $EXTERNAL_PORT" >>/app/config_info.txt
+  echo "SERVERNAMES: $SERVERNAMES (任选其一)" >>/app/config_info.txt
+  echo "PRIVATEKEY: $PRIVATEKEY" >>/app/config_info.txt
+  echo "PUBLICKEY/PASSWORD: $PUBLICKEY" >>/app/config_info.txt
+  echo "NETWORK: $NETWORK" >>/app/config_info.txt
+  echo "XHTTP_PATH: $XHTTP_PATH" >>/app/config_info.txt
+  echo "RATE_LIMIT_ENABLED: $ENABLE_RATE_LIMIT" >>/app/config_info.txt
 
   if [ "$IPV4" != "null" ]; then
     SUB_IPV4="vless://$UUID@$IPV4:$EXTERNAL_PORT?encryption=none&security=reality&type=$NETWORK&sni=$FIRST_SERVERNAME&fp=chrome&pbk=$PUBLICKEY&path=$XHTTP_PATH&mode=auto#${IPV4}-wulabing_docker_xhttp_reality"
-    echo "IPV4 订阅连接: $SUB_IPV4" >>/config_info.txt
-    echo -e "IPV4 订阅二维码:\n$(echo "$SUB_IPV4" | qrencode -o - -t UTF8)" >>/config_info.txt
+    echo "IPV4 订阅连接: $SUB_IPV4" >>/app/config_info.txt
+    echo -e "IPV4 订阅二维码:\n$(echo "$SUB_IPV4" | qrencode -o - -t UTF8)" >>/app/config_info.txt
   fi
   if [ "$IPV6" != "null" ];then
     SUB_IPV6="vless://$UUID@$IPV6:$EXTERNAL_PORT?encryption=none&security=reality&type=$NETWORK&sni=$FIRST_SERVERNAME&fp=chrome&pbk=$PUBLICKEY&path=$XHTTP_PATH&mode=auto#${IPV6}-wulabing_docker_xhttp_reality"
-    echo "IPV6 订阅连接: $SUB_IPV6" >>/config_info.txt
-    echo -e "IPV6 订阅二维码:\n$(echo "$SUB_IPV6" | qrencode -o - -t UTF8)" >>/config_info.txt
+    echo "IPV6 订阅连接: $SUB_IPV6" >>/app/config_info.txt
+    echo -e "IPV6 订阅二维码:\n$(echo "$SUB_IPV6" | qrencode -o - -t UTF8)" >>/app/config_info.txt
   fi
 
 
-  echo -e "\033[0m" >>/config_info.txt
+  echo -e "\033[0m" >>/app/config_info.txt
 
 fi
 
 # show config info
-cat /config_info.txt
+cat /app/config_info.txt
 
 # run xray
-exec /xray -config /config.json
+exec /xray -config /app/config.json
