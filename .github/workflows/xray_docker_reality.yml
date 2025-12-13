@@ -50,7 +50,7 @@ jobs:
           echo "XRAY_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v4.0.0
+        uses: docker/build-push-action@v6.8
         with:
           context: ./reality
           file: ./reality/Dockerfile
