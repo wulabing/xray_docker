@@ -26,6 +26,7 @@ ENV NETWORK=""
 ENV XHTTP_PATH=""
 ENV INTERNAL_PORT=""
 ENV HOSTMODE_PORT=""
+ENV ENABLE_RATE_LIMIT=""
 ENV TZ=Asia/Shanghai
 
 WORKDIR /
@@ -37,10 +38,13 @@ COPY --from=builder /app/xray /
 
 RUN apk add --no-cache --no-scripts tzdata ca-certificates jq curl libqrencode-tools && \
     mkdir -p /var/log/xray && \
+    mkdir -p /app && \
     wget -O /geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat && \
     wget -O /geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat && \
     chmod +x /entrypoint.sh
 
+# 创建一个挂载点，用于持久化配置文件
+VOLUME ["/app"]
 
 ENTRYPOINT ["./entrypoint.sh"]
 EXPOSE 443
