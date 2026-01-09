@@ -1,0 +1,57 @@
+# Claude Code 相关文件
+CLAUDE.md
+.claude/
+
+# IDE 配置文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 临时文件和日志
+*.log
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Docker 相关
+*.tar
+*.tar.gz
+
+# 敏感配置文件（如果有本地测试配置）
+config_info.txt
+*.key
+*.pem
+*.crt
+*.cert
+
+# 构建产物
+dist/
+build/
+*.o
+*.so
+*.dylib
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+
+# 测试覆盖率报告
+coverage/
+*.coverage
+.nyc_output/
+
+# 操作系统文件
+Thumbs.db
+Desktop.ini
+
+# Git 相关
+*.orig
+*.rej
+
+# zcf相关
+.zcf/

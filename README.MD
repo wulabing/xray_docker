@@ -36,5 +36,9 @@ https://www.dmit.io/aff.php?aff=3957
 
 https://www.vultr.com/?ref=6881279
 
+您可以使用我的 nube AFF 购买按量付费VPS
+
+https://nube.sh/invite/5986088028ENM0
+
 您可以通过 USDT 支持我，感谢您的支持
-TRC20:TFannfnajNGYsMTuVDcXfZXXPbcaxAEffa
+TRC20: TU8mLTPfa5Y9nmszyfyt2VRAtuZhdLexL8

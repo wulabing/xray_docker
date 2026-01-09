@@ -8,6 +8,12 @@ else
     echo "UUID is not set, generate random UUID "
     UUID="$(/xray uuid)"
     echo "UUID: $UUID"
+  else
+    # Validate UUID format
+    if ! echo "$UUID" | grep -qE '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'; then
+      echo "Error: Invalid UUID format. Expected format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      exit 1
+    fi
   fi
 
   if [ -z "$XHTTP_PATH" ]; then
@@ -30,6 +36,12 @@ else
   if [ -z "$DEST" ]; then
     echo "DEST is not set. default value www.apple.com:443"
     DEST="www.apple.com:443"
+  else
+    # Validate DEST format (should contain host:port)
+    if ! echo "$DEST" | grep -qE '^[^:]+:[0-9]+$'; then
+      echo "Error: Invalid DEST format. Expected format: host:port (e.g., www.apple.com:443)"
+      exit 1
+    fi
   fi
 
   if [ -z "$SERVERNAMES" ]; then
@@ -44,6 +56,8 @@ else
     PUBLICKEY=$(cat /key | grep "Password" | awk -F ': ' '{print $2}')
     echo "Private key: $PRIVATEKEY"
     echo "Public key: $PUBLICKEY"
+    # Clean up temporary key file for security
+    rm -f /key
   fi
 
   if [ -z "$NETWORK" ]; then
@@ -66,16 +80,28 @@ else
 
 
   FIRST_SERVERNAME=$(echo $SERVERNAMES | awk '{print $1}')
+
+  # Determine if sensitive info should be hidden
+  if [ "$HIDE_SENSITIVE_INFO" = "true" ]; then
+    DISPLAY_UUID="********-****-****-****-************"
+    DISPLAY_PRIVATEKEY="********************************"
+    DISPLAY_PUBLICKEY="********************************"
+  else
+    DISPLAY_UUID="$UUID"
+    DISPLAY_PRIVATEKEY="$PRIVATEKEY"
+    DISPLAY_PUBLICKEY="$PUBLICKEY"
+  fi
+
   # config info with green color
   echo -e "\033[32m" >/config_info.txt
   echo "IPV6: $IPV6" >>/config_info.txt
   echo "IPV4: $IPV4" >>/config_info.txt
-  echo "UUID: $UUID" >>/config_info.txt
+  echo "UUID: $DISPLAY_UUID" >>/config_info.txt
   echo "DEST: $DEST" >>/config_info.txt
   echo "PORT: $EXTERNAL_PORT" >>/config_info.txt
   echo "SERVERNAMES: $SERVERNAMES (任选其一)" >>/config_info.txt
-  echo "PRIVATEKEY: $PRIVATEKEY" >>/config_info.txt
-  echo "PUBLICKEY/PASSWORD: $PUBLICKEY" >>/config_info.txt
+  echo "PRIVATEKEY: $DISPLAY_PRIVATEKEY" >>/config_info.txt
+  echo "PUBLICKEY/PASSWORD: $DISPLAY_PUBLICKEY" >>/config_info.txt
   echo "NETWORK: $NETWORK" >>/config_info.txt
   echo "XHTTP_PATH: $XHTTP_PATH" >>/config_info.txt
 
