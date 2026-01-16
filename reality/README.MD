@@ -42,6 +42,17 @@ HOSTMODE_PORT=443
 docker run -d --name xray_reality --restart=always --log-opt max-size=100m --log-opt max-file=3 --network host -e HOSTMODE_PORT=$HOSTMODE_PORT wulabing/xray_docker_reality:latest
 ```
 
+## 持久化配置（推荐）
+使用宿主机目录保存 UUID/私钥/订阅信息，镜像更新后连接信息保持不变：
+
+```
+docker pull wulabing/xray_docker_reality:latest
+EXTERNAL_PORT=443
+docker run -d --name xray_reality --restart=always --log-opt max-size=100m --log-opt max-file=3 -p $EXTERNAL_PORT:443 -e EXTERNAL_PORT=$EXTERNAL_PORT -v "./wulabing_xray_config:/data" wulabing/xray_docker_reality:latest
+```
+
+如果你之前保存过旧版的 config_info.txt，可放到 `./wulabing_xray_config/config_info.txt` 或 `./wulabing_xray_config/reality_config_info.txt`，启动时会自动兼容读取。
+
 
 查看日志获取配置信息，如下所示，按照提示配置客户端即可，
 
@@ -91,6 +102,7 @@ docker rm -f xray_reality
 * SERVERNAMES：服务器名称列表。默认值为 www.apple.com images.apple.com。
 * PRIVATEKEY：私钥。若未设置，脚本将自动生成一个新的私钥和对应的公钥。
 * NETWORK：网络类型。默认值为 tcp。
+* CONFIG_DIR：持久化目录。默认值为 /data。
 
 ## 常量
 * flow：xtls-rprx-vision
