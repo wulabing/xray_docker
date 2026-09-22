@@ -41,6 +41,6 @@ If you would like to support me, you can buy servers / proxies through my affili
 
 **Servers / proxies:** [BandwagonHost](https://bandwagonhost.com/aff.php?aff=63939) · [JustMySocks](https://justmysocks.net/members/aff.php?aff=17621) · [DMIT](https://www.dmit.io/aff.php?aff=3957) · [Nube.sh (pay-as-you-go)](https://nube.sh/invite/5986088028ENM0) · [Vultr](https://www.vultr.com/?ref=6881279)
 
-**socks5 / http residential proxies:** [Proxy-Cheap](https://app.proxy-cheap.com/r/Pbqf9l) · [IPRoyal](https://iproyal.cn/?r=249487)
+**socks5 / http residential proxies:** [Proxy-Cheap](https://app.proxy-cheap.com/r/Pbqf9l) · [IPRoyal](https://iproyal.cn/?r=249487) · [Thordata](https://dashboard.thordata.com/zh/register?invitation_code=5P8NDLWV) (10% off rotating residential proxies, 1–350GB; code: `WULABING`)
 
 You can also support me with USDT — thank you for your support — TRC20: `TU8mLTPfa5Y9nmszyfyt2VRAtuZhdLexL8`

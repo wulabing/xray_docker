@@ -92,7 +92,7 @@ docker run -d --name xray_reality --restart=always --log-opt max-size=100m --log
 
 **后置代理**：`PROXY` 为 `socks5://` 或 `http://` URL（可含账密）。启用后除 `geoip:cn`、`geoip:private`、`bittorrent` 外，其余出站走上游代理。主要用于链式代理纯净家宽 IP，用于解锁 Netflix 流媒体及 AI 使用/付款场景
 
-> 推荐家宽代理（AFF）：[Proxy-Cheap](https://app.proxy-cheap.com/r/Pbqf9l) / [IPRoyal](https://iproyal.cn/?r=249487)，购买 socks5/http 家宽代理后填入 `PROXY` 即可
+> 推荐家宽代理（AFF）：[Proxy-Cheap](https://app.proxy-cheap.com/r/Pbqf9l) / [IPRoyal](https://iproyal.cn/?r=249487) / [Thordata](https://dashboard.thordata.com/zh/register?invitation_code=5P8NDLWV)（动态住宅代理 1–350GB 九折，优惠码：`WULABING`），购买 socks5/http 家宽代理后填入 `PROXY` 即可
 
 ```
 # socks5
@@ -163,6 +163,6 @@ docker rm -f xray_reality
 
 **服务器 / 代理：** [搬瓦工](https://bandwagonhost.com/aff.php?aff=63939) · [JustMySocks](https://justmysocks.net/members/aff.php?aff=17621) · [DMIT](https://www.dmit.io/aff.php?aff=3957) · [Nube.sh（按量付费）](https://nube.sh/invite/5986088028ENM0) · [Vultr](https://www.vultr.com/?ref=6881279)
 
-**socks5 / http 家宽代理：** [Proxy-Cheap](https://app.proxy-cheap.com/r/Pbqf9l) · [IPRoyal](https://iproyal.cn/?r=249487)
+**socks5 / http 家宽代理：** [Proxy-Cheap](https://app.proxy-cheap.com/r/Pbqf9l) · [IPRoyal](https://iproyal.cn/?r=249487) · [Thordata](https://dashboard.thordata.com/zh/register?invitation_code=5P8NDLWV)（动态住宅代理 1–350GB 九折，优惠码：`WULABING`）
 
 也可以通过 USDT 支持我，感谢您的支持 —— TRC20：`TU8mLTPfa5Y9nmszyfyt2VRAtuZhdLexL8`

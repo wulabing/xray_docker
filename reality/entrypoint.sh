@@ -413,7 +413,10 @@ if [ -n "$PROXY" ]; then
       /config.json > /config.json_tmp && mv /config.json_tmp /config.json
   fi
 else
-  echo "Tip: 设置 PROXY 环境变量可接入家宽代理解锁 Netflix/AI 场景，推荐 Proxy-Cheap https://app.proxy-cheap.com/r/Pbqf9l 或 IPRoyal https://iproyal.cn/?r=249487"
+  echo "Tip: 设置 PROXY 环境变量可接入家宽代理解锁 Netflix/AI 场景，推荐："
+  echo "  Proxy-Cheap https://app.proxy-cheap.com/r/Pbqf9l"
+  echo "  IPRoyal https://iproyal.cn/?r=249487"
+  echo "  Thordata https://dashboard.thordata.com/zh/register?invitation_code=5P8NDLWV（动态住宅代理 1–350GB 九折，优惠码：WULABING）"
 fi
 
 # 持久化状态
@@ -491,7 +494,10 @@ fi
 
 echo "" >> /config_info.txt
 echo "===== 支持本项目 (AFF) =====" >> /config_info.txt
-echo "家宽代理(配合 PROXY 变量解锁流媒体/AI): Proxy-Cheap https://app.proxy-cheap.com/r/Pbqf9l | IPRoyal https://iproyal.cn/?r=249487" >> /config_info.txt
+echo "家宽代理(配合 PROXY 变量解锁流媒体/AI):" >> /config_info.txt
+echo "  Proxy-Cheap https://app.proxy-cheap.com/r/Pbqf9l" >> /config_info.txt
+echo "  IPRoyal https://iproyal.cn/?r=249487" >> /config_info.txt
+echo "  Thordata https://dashboard.thordata.com/zh/register?invitation_code=5P8NDLWV（动态住宅代理 1–350GB 九折，优惠码：WULABING）" >> /config_info.txt
 echo "VPS: 搬瓦工 https://bandwagonhost.com/aff.php?aff=63939 | DMIT https://www.dmit.io/aff.php?aff=3957" >> /config_info.txt
 
 echo -e "\033[0m" >> /config_info.txt
