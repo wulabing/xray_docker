@@ -54,8 +54,53 @@ jobs:
 
       - name: Get latest Xray-core version (including pre-release)
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          LATEST_VERSION=$(curl -fsSL 'https://api.github.com/repos/XTLS/Xray-core/releases?per_page=1' | jq -er '.[0].tag_name')
+          set +x
+          if [[ -z "$GH_TOKEN" ]]; then
+            echo "::error::Missing GitHub Actions token."
+            exit 1
+          fi
+          tmp_dir=$(mktemp -d)
+          trap 'rm -rf "$tmp_dir"' EXIT
+
+          # Pass the token on stdin, not in command-line arguments.
+          if ! http_status=$(
+            printf 'header = "Authorization: Bearer %s"\n' "$GH_TOKEN" |
+              (
+                unset GH_TOKEN
+                curl -q --config - --silent --proto '=https' \
+                  --connect-timeout 10 --max-time 30 \
+                  --header 'Accept: application/vnd.github+json' \
+                  --dump-header "$tmp_dir/headers" --output "$tmp_dir/body" \
+                  --write-out '%{http_code}' \
+                  'https://api.github.com/repos/XTLS/Xray-core/releases?per_page=1' 2>/dev/null
+              )
+          ); then
+            echo "::error::GitHub release lookup failed before receiving an HTTP response."
+            exit 1
+          fi
+          unset GH_TOKEN
+
+          if [[ "$http_status" != 200 ]]; then
+            echo "::error::GitHub release lookup returned HTTP $http_status."
+            # Print only known rate-limit headers with numeric values.
+            awk -F ': *' '
+              { sub(/\r$/, "", $2); key = tolower($1) }
+              NF == 2 && $2 ~ /^[0-9]+$/ &&
+                key ~ /^(x-ratelimit-limit|x-ratelimit-remaining|x-ratelimit-reset|retry-after)$/ {
+                  print key ": " $2
+                }
+            ' "$tmp_dir/headers"
+            exit 1
+          fi
+
+          # Keep upstream data out of the log and reject unsafe Docker tag characters.
+          if ! LATEST_VERSION=$(jq -er '.[0].tag_name | strings | select(test("\\A[A-Za-z0-9_][A-Za-z0-9_.-]{0,95}\\z"))' "$tmp_dir/body" 2>/dev/null); then
+            echo "::error::GitHub release response did not contain a valid Xray-core tag."
+            exit 1
+          fi
           echo "XRAY_VERSION=$LATEST_VERSION" >> "$GITHUB_ENV"
 
       - name: Build and push Docker image
